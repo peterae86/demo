@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/flight.qunar.com/!svn/ver/61155/flightqm/b2c_admin/trunk/src/main/java/com/qunar/flight/b2c/admin/annotation
+END
+AdminRequired.java
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/flight.qunar.com/!svn/ver/61155/flightqm/b2c_admin/trunk/src/main/java/com/qunar/flight/b2c/admin/annotation/AdminRequired.java
+END
+LoginRequired.java
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/flight.qunar.com/!svn/ver/59674/flightqm/b2c_admin/trunk/src/main/java/com/qunar/flight/b2c/admin/annotation/LoginRequired.java
+END
+AutoDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/flight.qunar.com/!svn/ver/59605/flightqm/b2c_admin/trunk/src/main/java/com/qunar/flight/b2c/admin/annotation/AutoDao.java
+END

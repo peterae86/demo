@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Foo实例</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+		var timestamp=0;
+		$(function() {
+			$("#chatform").submit(function(event) {
+				/* Act on the event */
+				$.post(
+					'postmsg.htm', {
+						message: $("#msg").val(),
+						name: $('#author').val(),
+						action: "postmsg",
+						timestamp:timestamp
+					}, function(data, textStatus, xhr) {
+					/*optional stuff to do after success */
+					$("#msg").val('');
+					var output='';
+					timestamp=data.data.time;
+					var list=data.data.data;
+					 for(var i in list){  
+						 output+='<strong>'+list[i]['username']+'</strong>:'+list[i]['message']+'<br>';
+					  }  
+					$('#messagewindow').prepend(output);
+				},"json");
+
+				return false;
+			});
+			
+		});
+		function updateMsg(){
+			$.post(
+				'getmsg.htm',
+				{timestamp:timestamp},
+				function(data, textStatus, xhr){
+					$("#loading").remove();
+
+					var output='';
+					timestamp=data.data.time;
+					var list=data.data.data;
+					 for(var i in list){  
+						 
+						 output+='<strong>'+list[i]['username']+'</strong>:'+list[i]['message']+'<br>';
+					  }  
+					$('#messagewindow').prepend(output);
+				}
+			);		
+		}
+		setTimeout('updateMsg()',2000);
+	</script>
+</head>
+<body>
+	<div id="wrapper">
+		<p id="messagewindow"><span id="loading">加载中。。。</span></p>
+		<form id="chatform">
+			姓名：<input type="text" id="author" size="50"><br>
+			内容：<input type="text" id="msg" size="50"><br>
+			<input type="submit" value="发送"><br>
+		</form>
+	</div>
+</body>
+</html>

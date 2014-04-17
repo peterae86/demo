@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	default-autowire="byName"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- 配置默认的Handler映射方式 -->
+	<bean
+		id="internalMapping"
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+	</bean>
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="me.peterae86.demo.web.interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="me.peterae86.demo.web.interceptor.AdminInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- Handler输入和输出的处理器 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<!-- 处理返回值为Json格式的数据 -->
+		<property name="customReturnValueHandlers">
+			<list>
+				<bean
+					class="me.peterae86.demo.web.adapter.JsonAndViewMethodReturnValueHandler" />
+			</list>
+		</property>
+	</bean>
+	<!-- 异常处理器 -->
+	<bean
+		id="jsonExceptionResolver"
+		class="me.peterae86.demo.web.adapter.JsonExceptionResolver">
+		<property
+			name="order"
+			value="0" />
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property
+			name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property
+			name="prefix"
+			value="/WEB-INF/jsp/" />
+		<property
+			name="suffix"
+			value=".jsp" />
+	</bean>
+	<!-- 配置view视图处理器 -->
+	<bean
+		id="beanNameViewResolver"
+		class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property
+			name="order"
+			value="0" />
+	</bean>
+	<!-- JsonAndView对应视图 -->
+	<bean
+		id="jsonView"
+		class="me.peterae86.demo.web.view.JsonpView">
+		<property name="encoding">
+			<value type="org.codehaus.jackson.JsonEncoding">UTF8</value>
+		</property>
+		<property
+			name="contentType"
+			value="application/json;charset=UTF-8" />
+		<property
+			name="extractValueFromSingleKeyModel"
+			value="true" />
+	</bean>
+
+	<!-- 注入Controller -->
+	<context:component-scan base-package="me.peterae86.demo.web" />
+	<mvc:annotation-driven />
+</beans>
